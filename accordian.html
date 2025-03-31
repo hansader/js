@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Document</title>
+        <style>
+            *{
+                margin: 0;
+                box-sizing: border-box;
+            }
+            .accordion{
+                margin: 20px auto;
+                width: 70%;
+                background-color: rgb(30, 109, 155);
+                padding: 20px;
+            }
+            .accordion-title{
+                background-color: rgb(218, 102, 34);
+                padding: 10px;
+            }
+            .accordion-title a{
+                text-decoration: none;
+                color: white;
+                font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+            }
+            .accordion-item:not(:last-child) > .accordion-title{
+                margin-bottom: 10px;
+            }
+            .accordion-detail{
+                padding: 20px;
+                display: none;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="accordion">
+            <div class="accordion-item">
+                <div class="accordion-title">
+                    <a href="#">
+                        <h3>Title 1</h3>
+                    </a>
+                </div>
+                <div class="accordion-detail">
+                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Error, temporibus totam? Sit, ad officia provident quasi autem odio illum delectus doloremque dolor aliquid animi dignissimos molestiae quidem eveniet quo possimus, porro earum perspiciatis facilis ullam! Velit repellat, delectus laudantium cum odio quisquam rem repellendus tenetur nemo aliquam autem omnis, reprehenderit odit. Provident fugit officiis, quos aut ratione quidem asperiores exercitationem odio deleniti iusto voluptatibus, totam aperiam rerum quaerat vel dolore, earum iure. Porro ab numquam molestiae quae quo similique aliquam, doloremque vel aperiam nobis nemo aliquid nam. Est facere dolorum temporibus quasi, asperiores ea rem id eveniet, nihil labore tenetur!</p>
+                </div>
+            </div>
+            <div class="accordion-item">
+                <div class="accordion-title">
+                    <a href="#">
+                        <h3>Title 1</h3>
+                    </a>
+                </div>
+                <div class="accordion-detail">
+                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Error, temporibus totam? Sit, ad officia provident quasi autem odio illum delectus doloremque dolor aliquid animi dignissimos molestiae quidem eveniet quo possimus, porro earum perspiciatis facilis ullam! Velit repellat, delectus laudantium cum odio quisquam rem repellendus tenetur nemo aliquam autem omnis, reprehenderit odit. Provident fugit officiis, quos aut ratione quidem asperiores exercitationem odio deleniti iusto voluptatibus, totam aperiam rerum quaerat vel dolore, earum iure. Porro ab numquam molestiae quae quo similique aliquam, doloremque vel aperiam nobis nemo aliquid nam. Est facere dolorum temporibus quasi, asperiores ea rem id eveniet, nihil labore tenetur!</p>
+                </div>
+            </div>
+            <div class="accordion-item">
+                <div class="accordion-title">
+                    <a href="#">
+                        <h3>Title 1</h3>
+                    </a>
+                </div>
+                <div class="accordion-detail">
+                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Error, temporibus totam? Sit, ad officia provident quasi autem odio illum delectus doloremque dolor aliquid animi dignissimos molestiae quidem eveniet quo possimus, porro earum perspiciatis facilis ullam! Velit repellat, delectus laudantium cum odio quisquam rem repellendus tenetur nemo aliquam autem omnis, reprehenderit odit. Provident fugit officiis, quos aut ratione quidem asperiores exercitationem odio deleniti iusto voluptatibus, totam aperiam rerum quaerat vel dolore, earum iure. Porro ab numquam molestiae quae quo similique aliquam, doloremque vel aperiam nobis nemo aliquid nam. Est facere dolorum temporibus quasi, asperiores ea rem id eveniet, nihil labore tenetur!</p>
+                </div>
+            </div>
+            <div class="accordion-item">
+                <div class="accordion-title">
+                    <a href="#">
+                        <h3>Title 1</h3>
+                    </a>
+                </div>
+                <div class="accordion-detail">
+                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Error, temporibus totam? Sit, ad officia provident quasi autem odio illum delectus doloremque dolor aliquid animi dignissimos molestiae quidem eveniet quo possimus, porro earum perspiciatis facilis ullam! Velit repellat, delectus laudantium cum odio quisquam rem repellendus tenetur nemo aliquam autem omnis, reprehenderit odit. Provident fugit officiis, quos aut ratione quidem asperiores exercitationem odio deleniti iusto voluptatibus, totam aperiam rerum quaerat vel dolore, earum iure. Porro ab numquam molestiae quae quo similique aliquam, doloremque vel aperiam nobis nemo aliquid nam. Est facere dolorum temporibus quasi, asperiores ea rem id eveniet, nihil labore tenetur!</p>
+                </div>
+            </div>
+        </div>
+        <script src="./js/jquery.min.js"></script>
+        <script>
+            $(document).ready(function () {
+                $(".accordion-title").click(function () {
+                    $(this).parent(".accordion-item").find(".accordion-detail").slideToggle();
+                    $(this).parent(".accordion-item")
+                    .prevAll(".accordion-item")
+                    .find(".accordion-detail")
+                    .slideUp();
+                    $(this)
+                    .parent(".accordion-item")
+                    .nextAll(".accordion-item")
+                    .find(".accordion-detail")
+                    .slideUp();
+                });
+            });
+
+        </script>
+    </body>
+</html>
