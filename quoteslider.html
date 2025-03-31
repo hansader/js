@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Colorful Quote Slider</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: Arial, sans-serif; }
+        body { text-align: center; padding: 20px; transition: background 1.5s ease-in-out; }
+        .slider-container {
+            position: relative; width: 90%; max-width: 700px; height: 450px; 
+            margin: auto; overflow: hidden; border-radius: 12px; 
+            box-shadow: 0px 4px 15px rgba(0,0,0,0.3); background: #fff;
+        }
+        .slide { display: none; position: relative; width: 100%; height: 100%; }
+        .slide img { 
+            width: 100%; height: 100%; object-fit: cover; border-radius: 12px; 
+            display: block;
+        }
+        .quote {
+            position: absolute; bottom: 30px; left: 50%; transform: translateX(-50%);
+            background: rgba(0,0,0,0.7); color: white; padding: 12px 20px;
+            border-radius: 8px; font-size: 18px; width: 80%; text-align: center;
+        }
+        .prev, .next {
+            position: absolute; top: 50%; transform: translateY(-50%);
+            background: rgba(255, 255, 255, 0.8); color: black; border: none; padding: 15px;
+            cursor: pointer; font-size: 22px; border-radius: 50%; transition: 0.3s;
+            width: 50px; height: 50px; display: flex; align-items: center; justify-content: center;
+            box-shadow: 0px 2px 5px rgba(0,0,0,0.3);
+        }
+        .prev { left: 15px; }
+        .next { right: 15px; }
+        .prev:hover, .next:hover { background: black; color: white; }
+        .dots { text-align: center; margin-top: 15px; }
+        .dot {
+            display: inline-block; width: 12px; height: 12px; margin: 5px;
+            background: #bbb; border-radius: 50%; cursor: pointer; transition: 0.3s;
+        }
+        .active { background: black; }
+        h2{
+            padding-bottom: 25px;
+            padding-top: 25px;
+        }
+    </style>
+</head>
+<body>
+    <h2 class="quoteslider"> Quote Slider</h2>
+    <div class="slider-container">
+        <div class="slide">
+            <img src="https://rockhall.com/wp-content/uploads/2024/03/johnlennon_1974_gruen_webuseonly.jpg" alt="Slide 1">
+            <div class="quote">"Life is what happens when you're busy making other plans." - John Lennon</div>
+        </div>
+        <div class="slide">
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQtWyERD5RRGcpq7BHdLGJajx6A6b9TH-eAOWpsPNaEUFJqlR7KxA2cSJ8dxjGt8tzuCWQ&usqp=CAU" alt="Slide 2">
+            <div class="quote">"Success is not the key to happiness. Happiness is the key to success." - Albert Schweitzer</div>
+        </div>
+        <div class="slide">
+            <img src="https://helios-i.mashable.com/imagery/articles/02JO4CkW4vlPov9vtmi8oGI/hero-image.fill.size_1248x702.v1611610295.jpg" alt="Slide 3">
+            <div class="quote">"Do what you can, with what you have, where you are." - Theodore Roosevelt</div>
+        </div>
+        <button class="prev" onclick="changeSlide(-1)">&#10094;</button>
+        <button class="next" onclick="changeSlide(1)">&#10095;</button>
+    </div>
+    <div class="dots"></div>
+    <script>
+        let slideIndex = 0;
+        let slides = document.querySelectorAll('.slide');
+        let dotsContainer = document.querySelector('.dots');
+        const colors = [
+            "radial-gradient(circle, #FF5733 10%, #FFC371 100%)",
+            "radial-gradient(circle, #6a11cb 10%, #2575fc 100%)",
+            "radial-gradient(circle, #00c6ff 10%, #0072ff 100%)",
+            "radial-gradient(circle, #0f9b0f 10%, #00ff95 100%)",
+            "radial-gradient(circle, #ffcc00 10%, #ff8800 100%)"
+        ];
+        slides.forEach((_, index) => {
+            let dot = document.createElement('span');
+            dot.classList.add('dot');
+            dot.setAttribute('onclick', `showSlide(${index})`);
+            dotsContainer.appendChild(dot);
+        });
+        function showSlide(index) {
+            slideIndex = index;
+            slides.forEach((slide, i) => {
+                slide.style.display = i === slideIndex ? 'block' : 'none';
+                dotsContainer.children[i].classList.toggle('active', i === slideIndex);
+            });
+            document.body.style.transition = "background 1.5s ease-in-out";
+            document.body.style.background = colors[slideIndex % colors.length];
+        }
+        function changeSlide(step) {
+            slideIndex += step;
+            if (slideIndex >= slides.length) slideIndex = 0;
+            if (slideIndex < 0) slideIndex = slides.length - 1;
+            showSlide(slideIndex);
+        }
+        function autoSlide() {
+            changeSlide(1);
+            setTimeout(autoSlide, 5000);
+        }
+        showSlide(slideIndex);
+        setTimeout(autoSlide, 5000);
+    </script>
+</body>
+</html>
