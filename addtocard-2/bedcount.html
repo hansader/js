@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Corona Api</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h3>COVID-19 Dashboard</h3>
+        <nav class="navbar" >
+            <a class="border white" href="./index.html">Worldwide</a>
+            <a class="border white" href="./india.html">INDIA-Testing</a>
+            <a class="blue" href="./bedcount.html">Bed Count</a>
+        </nav>
+        <div class="details" style="text-align: center;">
+            <h1 ><span>COVID-19</span> - BED-COUNT</h1>
+            <select id="locname" value="choose a location"></select>
+            <div class="main" id="main">
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"  integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script>
+        let allstates=[];
+        function getallstates(){
+            $.ajax({
+                url:"https://api.rootnet.in/covid19-in/hospitals/beds",
+                method:'get',
+                success:(res)=>{
+                    allstates=res.data.regional
+                    let optiondata="<option selected disabled value=''>--Choose a location--</option>"
+                    allstates.forEach(loc=>{
+                        optiondata+=`<option value="${loc.state}">${loc.state}</option>`
+                    });
+                    document.getElementById('locname').innerHTML=optiondata;
+                },
+                error:function(){
+                    alert("ERROR !!!!");
+                }
+            })
+        }
+        document.getElementById("locname").addEventListener("change",function(){
+            let selectstate=allstates.find(loc=>loc.state==this.value);
+
+            if(selectstate){
+                let ruralhos=selectstate.ruralHospitals.toLocaleString();
+                let urbanhos=selectstate.urbanHospitals.toLocaleString();
+                let totalhos=selectstate.totalHospitals.toLocaleString();
+                let ruralbed=selectstate.ruralBeds.toLocaleString();
+                let urbanbed=selectstate.urbanBeds.toLocaleString();
+                let totalbed=selectstate.totalBeds.toLocaleString();
+
+                let htmlentity=`
+                    <h4>Date:${selectstate.asOn}</h4>
+                    <div class="row">
+                    <div class="col-4">
+                        <div class="card">
+                            <h4>Rural Hospitals</h4>
+                            <h1 class="crimson">${ruralhos}</h1>
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <div class="card">
+                            <h4>Urban Hospitals</h4>
+                            <h1 class="green">${urbanhos}</h1>
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <div class="card">
+                            <h4>Total Hospitals</h4>
+                            <h1 class="blue">${totalhos}</h1>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-4">
+                        <div class="card">
+                            <h4>Rural Beds</h4>
+                            <h1 class="crimson">${ruralbed}</h1>
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <div class="card">
+                            <h4>Urban Beds</h4>
+                            <h1 class="green">${urbanbed}</h1>
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <div class="card">
+                            <h4>Total Beds</h4>
+                            <h1 class="blue">${totalbed}</h1>
+                        </div>
+                    </div>
+                </div>
+                `;
+                document.getElementById("main").innerHTML=htmlentity;
+            }
+        })
+        getallstates();
+    </script>
+</body>
+</html>

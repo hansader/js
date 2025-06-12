@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.youtube.com%2Fwatch%3Fv%3DgXWohFYrI0M&psig=AOvVaw3VMY4A8nKzeCc1ndFJFigL&ust=1746015564248000&source=images&cd=vfe&opi=89978449&ved=0CBcQjhxqFwoTCNiC4YCd_YwDFQAAAAAdAAAAABAl -->
+    <!-- https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.youtube.com%2Fwatch%3Fv%3DbCTd1eRX7Iw&psig=AOvVaw3VMY4A8nKzeCc1ndFJFigL&ust=1746015564248000&source=images&cd=vfe&opi=89978449&ved=0CBcQjhxqFwoTCNiC4YCd_YwDFQAAAAAdAAAAABAP -->
+    <meta charset="UTF-8">
+    <meta title="viewport" content="width=device-width, initial-scale=1.0">
+    <title>products </title>
+    <link rel="stylesheet" href="./css/style.css">
+    <link rel="stylesheet" href="./css/all.min.css">
+</head>
+<body>
+    <h1 style="margin-bottom: 70px;" class="text-center">Cart System</h1>
+    <div class="container">
+        <div class="products" >
+            <span style="font-weight: bold;font-size: large;margin-left: 10px;">PRODUCT LIST</span>
+            <a href="./cart.html"><i class="fa-solid fa-cart-shopping"></i></a>
+            <span id="itemincrement">0</span>
+            <div id="productlist" class="row text-center"></div>
+        </div>
+    </div>
+   
+     <script>
+        let products=[
+    {
+        "id": 1,
+        "title":" LD01 LOUNGE CHAIR",
+        "money": 200,
+        "image": "https://cdn.decornation.in/wp-content/uploads/2020/07/modern-dining-table-chairs.jpg"
+    },
+    {
+        "id": 2,
+        "title":" LD02 LOUNGE CHAIR",
+        "money": 250,
+        "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRiMlVCuuxv1kRnZ656vp42OgqgT0Jd17Rqk73JvIVJtG6JmB4HOuO7XhogXCaI_tUu6r8&usqp=CAU"
+    },
+    {
+        "id": 3,
+        "title":" LD03 LOUNGE CHAIR",
+        "money": 290,
+        "image": "https://m.media-amazon.com/images/I/514vMHD+TWL._AC_UF894,1000_QL80_.jpg"
+    },
+    {
+        "id": 4,
+        "title":" LD04 LOUNGE CHAIR",
+        "money": 200,
+        "image": "https://i5.walmartimages.com/asr/29478b90-afc0-47b2-b8a2-c0eb01f69bca.80064a3cc33afd24643b6ff7c30cf892.png?odnHeight=768&odnWidth=768&odnBg=FFFFFF"
+    },
+    {
+        "id": 5,
+        "title":" LD05 LOUNGE CHAIR",
+        "money": 300,
+        "image": "https://static.wixstatic.com/media/648254_4d6515a466a0443ebe7cb339d8856fc3~mv2.jpg/v1/fill/w_480,h_480,al_c,q_80,usm_0.66_1.00_0.01,enc_avif,quality_auto/648254_4d6515a466a0443ebe7cb339d8856fc3~mv2.jpg"
+    },
+    {
+        "id": 6,
+        "title":" LD06 LOUNGE CHAIR",
+        "money": 200,
+        "image": "https://m.media-amazon.com/images/I/81BMUJQEBtL.jpg"
+    },
+    {
+        "id": 7,
+        "title":" LD07 LOUNGE CHAIR",
+        "money": 200,
+        "image": "https://thehomestore.com.pk/cdn/shop/files/52_d38ca574-c578-41a3-982f-b4b2b9d5591e.jpg?v=1687329981"
+    },
+    {
+        "id": 8,
+        "title":" LD08 LOUNGE CHAIR",
+        "money": 200,
+        "image": "https://i.ebayimg.com/00/s/MTYwMFgxNjAw/z/PuEAAOSwP-FjzfwL/$_57.JPG"
+    }
+
+]
+        
+        // let cart=[]
+        // let cart=[];
+        // cart=JSON.parse(localStorage.getItem('cart'))?JSON.parse(localStorage.getItem('cart')):[];
+
+        localStorage.setItem('data1',JSON.stringify(products));
+
+        function getproducts(){
+            products=JSON.parse(localStorage.getItem('data1'))?JSON.parse(localStorage.getItem('data1')):[];
+
+            let htmlentity=''
+                products.forEach((v,i)=>{
+                    htmlentity+=`<div class="col-3 ">`
+                    htmlentity+=`<div class="box">`
+                    htmlentity+=`<img src="${v.image}" height="150" width="170">`;
+                    htmlentity+=`<h4>${v.title}</h4>`;
+                    htmlentity+=`<p>${v.money}</p>`;
+                    htmlentity+=`<button id="add" type="submit" onclick="addtocart(${i})">Add to Cart</button>`;
+                    htmlentity+=`</div>`
+                    htmlentity+=`</div>`
+                })
+                document.getElementById("productlist").innerHTML=htmlentity
+                updateCartIcon(); 
+
+                
+        }
+        
+       getproducts()
+      
+       function updateCartIcon() {
+            let cartinc = JSON.parse(localStorage.getItem('cart')) || [];
+            let totalQty = cartinc.reduce((acc, item) => acc + item.quantity, 0);
+            document.getElementById("itemincrement").innerText = totalQty;
+        }
+    
+        function addtocart(index) {
+            let item = products[index];
+            item.quantity = 1;
+            cartobj={
+                id: item.id,
+                title: item.title,
+                money: item.money,
+                image: item.image,
+                quantity: item.quantity
+            };
+            let cart = JSON.parse(localStorage.getItem('cart')) || [];
+            cart.push(cartobj);
+            localStorage.setItem('cart', JSON.stringify(cart));
+            updateCartIcon();
+            window.open("cart.html",'_blank')
+        }
+       
+    
+
+    </script> 
+</body>
+</html>

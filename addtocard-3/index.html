@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather API</title>
+    <link rel="stylesheet" href="./css/style.css">
+    <link rel="stylesheet" href="./css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <div class="weather">
+            <h1>Weather App</h1>
+            <div class="inputcity">
+                <input type="text" id="cityname" placeholder="enter city name">
+                <button id="srchbtn" onclick="return weather()">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                </button>
+            </div>
+            <div id="result" class="result"></div>
+        </div>
+    </div>
+
+   <script>
+    let key="d66443037e5cc8aeb41394861f17c3c5";
+
+    let srchbtn=document.getElementById('srchbtn');
+    let cityname=document.getElementById('cityname');
+    let result=document.getElementById('result');
+
+    function weather(){
+        let city=cityname.value.trim();
+   
+    let url=`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${key}&units=metric`;
+
+    fetch(url)
+        .then(response=>response.json())
+        .then(data=>{
+            result.innerHTML=
+            `<h3><i class="fa-solid fa-location-dot"></i>${data.name}</h3> 
+            <img src="https://openweathermap.org/img/w/${data.weather[0].icon}.png" alt="">
+            <h1>${data.main.temp} &#8451;</h1>
+            <p>${data.weather[0].description}</p>
+            <div class="details">
+                <div >
+                    <p>${data.main.feels_like} &#8451;</p>
+                    <p>RealFeel</p>
+                </div>
+                <div >
+                    <p>${data.main.humidity}%</p>
+                    <p>Humidity</p>
+                </div>
+               
+                <div >
+                    <p>${data.wind.deg}</p>
+                    <p>deg</p>
+                </div>
+                <div >
+                    <p>${data.wind.speed}km/h</p>
+                    <p>speed</p>
+                </div>
+            </div>`
+        })
+        .catch(error=>{
+            result.innerHTML=`<p>Error</p>`;
+            console.error(error);
+        });
+        cityname.value='';
+    }
+   </script> 
+</body>
+</html>

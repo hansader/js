@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Corona Api</title>
+   <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h3>COVID-19 Dashboard</h3>
+        <nav class="navbar" >
+            <a  href="./index.html" class="border blue">Worldwide</a>
+            <a class="border white" href="./india.html">INDIA-Testing</a>
+            <a class="white" href="./bedcount.html">Bed Count</a>
+        </nav>
+        <div class="details" style="text-align: center;">
+            <h1 ><span>COVID-19</span> - Worldwide</h1>
+            <div class="main" id="main"></div>
+        </div>
+    </div>
+
+    <script>
+        fetch("https://disease.sh/v3/covid-19/all")
+            .then(function(response){
+                return response.json();
+            })
+            .then(function(data){
+                let confirmed=data.cases.toLocaleString();
+                let deaths=data.deaths.toLocaleString();
+                let recover=data.recovered.toLocaleString();
+                let active=data.active.toLocaleString();
+                let deathrate=((data.deaths/data.cases)*100).toFixed(2);
+                let recoverrate=((data.recovered/data.cases)*100).toFixed(2);
+                
+                let htmlentity=`
+                    <div class="row">
+                    <div class="col-4">
+                        <div  class="card">
+                            <h4>Confirmed</h4>
+                            <h1 class="blue">${confirmed}</h1>
+                        </div>
+                    </div>
+                    <div   class="col-4">
+                        <div class="card">
+                            <h4>Deaths</h4>
+                            <h1 class="crimson">${deaths}</h1>
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <div class="card">
+                            <h4>Recovered*</h4>
+                            <h1  class="green">${recover}</h1>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-4">
+                        <div class="card">
+                            <h4>Active*</h4>
+                            <h1 class="active">${active}</h1>
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <div  class="card">
+                            <h4>Death-rate</h4>
+                            <h1  class="crimson">${deathrate}%</h1>
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <div class="card">
+                            <h4>Recovery-Rate</h4>
+                            <h1 class="green">${recoverrate}%</h1>
+                        </div>
+                    </div>
+                </div>
+                `;
+                document.getElementById("main").innerHTML=htmlentity;
+            })
+            .catch(function(error){
+                document.getElementById("main").innerHTML=`<p>
+                    Error!!!</p>`
+                    console.log(error);
+            })
+    </script>
+</body>
+</html>

@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Invoice</title>
+    <style>
+        body {
+            font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 50px;
+        }
+        .container {
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            width: 44%;
+            margin-right: 10px;
+            height: 600px;
+        }
+        h1 {
+            text-align: center;
+        }
+        .form input,.form button {
+            padding: 10px;
+            margin: 5px 0;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            /* display: block; */
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            cursor: pointer;
+            width: 100%;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        table {
+            width: 100%;
+            margin-top: 20px;
+        }
+        table,th,td {
+            border: 1px solid #ddd;
+        }
+        th,td {
+            padding: 12px;
+            text-align: center;
+        }
+        .summary {
+            margin-top: 20px;
+            font-size: 1.2em;
+            text-align: right;
+        }
+        .summary p {
+            margin: 5px 0;
+        }
+        #generateInvoiceBtn{
+            background-color: rgb(77, 77, 228);
+            width: 30%;
+            margin-left: 70%;
+            padding: 10px 0;
+            border: none;
+            border-radius: 5px;
+        }
+        #generateInvoiceBtn:hover{
+            background-color: rgb(122, 122, 236);
+        }
+        #finalInvoice p{
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <h1>Invoice Billing System</h1>
+        <div class="form">
+            <label >Customer Name</label>
+            <input  type="text" id="customername" placeholder="enter your name" required>
+            <label >Inv.No</label>
+            <input type="number"  id="invnumber">
+            <label >Inv.Date</label>
+            <input type="date"  id="invdate">
+
+            <h3>Product Details</h3>
+
+            <label ></label>
+            <input type="text" id="productname" placeholder="Product Name" required>
+            <input type="number" id="productprice" placeholder="Price" required>
+            <input type="number" id="productquantity" placeholder="Quantity" required>
+            <button id="addProductBtn">Add Product</button>
+        </div>
+
+        <table id="invoiceTable">
+            <thead>
+                <tr>
+                    <th>Product</th>
+                    <th>Price</th>
+                    <th>Quantity</th>
+                    <th>Total</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+
+        <div class="summary">
+            <p>Subtotal: $<span id="subtotal">0</span></p>
+            <p>GST (18%): $<span id="gst">0</span></p>
+            <p style="font-weight: bold;">Net Amt: $<span id="total">0</span></p>
+        </div>
+
+        <button id="generateInvoiceBtn" >Generate Invoice</button>
+    </div>
+    <div class="container">
+        <div id="finalInvoice">
+            <h2 style="text-align: center;">Generated Invoice</h2>
+            <p>Customer Name: <span id="finalCustomerName"></span></p>
+            <p>Invoice Number: <span id="finalInvoiceNumber"></span></p>
+            <p>Invoice Date: <span id="finalInvoiceDate"></span></p>
+        
+            <table>
+              <thead>
+              <tr style="background-color: #f2f2f2;">
+                <th>Product</th>
+                <th>Price</th>
+                <th>Quantity</th>
+                <th>Total</th>
+              </tr>
+              </thead>
+              <tbody id="finalInvoiceBody"></tbody>
+            </table>
+        
+            <div style="margin-top: 20px; text-align: right;">
+              <p>Subtotal: $<span id="finalSubtotal"></span></p>
+              <p>GST (18%): $<span id="finalGst"></span></p>
+              <p>Net Amount: $<span id="finalTotal"></span></p>
+            </div>
+          </div>
+    </div>
+
+    <script>
+        document.getElementById("invdate").valueAsDate = new Date();
+        document.getElementById("addProductBtn").addEventListener("click", addProduct);
+        document.getElementById("generateInvoiceBtn").addEventListener("click",generateInvoice)
+
+        let products = [];
+
+        function addProduct() {
+            let productname = document.getElementById("productname").value;
+            let productprice = parseFloat(document.getElementById("productprice").value);
+            let productquantity = parseInt(document.getElementById("productquantity").value);
+
+            if (!productname || isNaN(productprice) || isNaN(productquantity)) {
+                alert("Please fill out all fields correctly.");
+                return;
+            }
+
+            let productTotal = productprice * productquantity;
+
+            let product = {
+                name: productname,
+                price: productprice,
+                quantity: productquantity,
+                total: productTotal
+            };
+
+            products.push(product);
+
+            tableEntity();
+            clearInput();
+        }
+
+        function tableEntity() {
+            let tableBody = document.querySelector("#invoiceTable tbody");
+            tableBody.innerHTML = "";
+
+            let subtotal = 0;
+
+            products.forEach((product, index) => {
+                let row = document.createElement("tr");
+
+                row.innerHTML = `
+            <td>${product.name}</td>
+            <td>$${product.price}</td>
+            <td>${product.quantity}</td>
+            <td>$${product.total}</td>
+            <td><button style="background-color:red;" onclick="deleteProduct(${index})">Delete</button></td>
+        `;
+
+                tableBody.appendChild(row);
+
+                subtotal =subtotal+ product.total;
+            });
+
+            let gst = subtotal * 0.18;
+            let total = subtotal + gst;
+
+            document.getElementById("subtotal").textContent = subtotal;
+            document.getElementById("gst").textContent = gst;
+            document.getElementById("total").textContent = total;
+        }
+
+        function deleteProduct(index) {
+            products.splice(index, 1);
+            tableEntity();
+        }
+        function clearInput() {
+            document.getElementById("productname").value = "";
+            document.getElementById("productprice").value = "";
+            document.getElementById("productquantity").value = "";
+        }
+
+        function generateInvoice() {
+                let customerName = document.getElementById("customername").value;
+                let invNumber = document.getElementById("invnumber").value;
+                let invDate = document.getElementById("invdate").value;
+
+                if (!customerName || !invNumber || !invDate || products.length === 0) {
+                    alert("Please fill in customer details and add at least one product.");
+                    return;
+                }
+
+                document.getElementById("finalCustomerName").textContent = customerName;
+                document.getElementById("finalInvoiceNumber").textContent = invNumber;
+                document.getElementById("finalInvoiceDate").textContent = invDate;
+
+                let tbody = document.getElementById("finalInvoiceBody");
+
+                tbody.innerHTML = products.map(product => `
+                    <tr>
+                        <td>${product.name}</td>
+                        <td>$${product.price.toFixed(2)}</td>
+                        <td>${product.quantity}</td>
+                        <td>$${product.total.toFixed(2)}</td>
+                    </tr>
+                `).join('');
+
+                let subtotal = parseFloat(document.getElementById("subtotal").textContent);
+                let gst = parseFloat(document.getElementById("gst").textContent);
+                let total = parseFloat(document.getElementById("total").textContent);
+
+                document.getElementById("finalSubtotal").textContent = subtotal;
+                document.getElementById("finalGst").textContent = gst;
+                document.getElementById("finalTotal").textContent = total;
+
+                document.getElementById("finalInvoice").style.display = "block";
+            }
+    </script>
+</body>
+</html>

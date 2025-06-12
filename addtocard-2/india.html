@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Corona Api</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h3>COVID-19 Dashboard</h3>
+        <nav class="navbar" >
+            <a class="border white" href="./index.html">Worldwide</a>
+            <a class="border blue" href="./india.html">INDIA-Testing</a>
+            <a class="white" href="./bedcount.html">Bed Count</a>
+        </nav>
+        <div class="details" style="text-align: center;">
+            <h1 ><span>COVID-19</span>  - INDIA</h1>
+            <select id="locname" value="choose a location"></select>
+            <div class="main" id="main"></div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"  integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script>
+        let allstates=[];
+        function getallstates(){
+            $.ajax({
+                url:"https://api.rootnet.in/covid19-in/stats/latest",
+                method:'get',
+                success:(res)=>{
+                    allstates=res.data.regional
+                    let optiondata="<option selected disabled value=''>--Choose a location--</option>"
+                    allstates.forEach(state=>{
+                        optiondata+=`<option value="${state.loc}">${state.loc}</option>`
+                    });
+                    document.getElementById('locname').innerHTML=optiondata;
+                },
+                error:function(){
+                    alert("ERROR !!!!");
+                }
+            })
+        }
+        document.getElementById("locname").addEventListener("change",function(){
+            let selectstate=allstates.find(state=>state.loc==this.value);
+
+            if(selectstate){
+                let confirmed=selectstate.totalConfirmed.toLocaleString();
+                let deaths=selectstate.deaths.toLocaleString();
+                let recovered=selectstate.discharged.toLocaleString();
+                let deathrate=((selectstate.deaths/selectstate.totalConfirmed)*100).toFixed(2);
+                let recoveryrate=((selectstate.discharged/selectstate.totalConfirmed)*100).toFixed(2);
+
+                let htmlentity=`
+                    <div class="row">
+                    <div class="col-4">
+                        <div class="card">
+                            <h4>Confirmed</h4>
+                            <h1 class="blue">${confirmed}</h1>
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <div class="card">
+                            <h4>Deaths</h4>
+                            <h1  class="crimson">${deaths}</h1>
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <div class="card">
+                            <h4>Recovered</h4>
+                            <h1 class="green">${recovered}</h1>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-6">
+                        <div class="card">
+                            <h4>Death rate</h4>
+                            <h1 class="crimson">${deathrate}%</h1>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="card">
+                            <h4>Recovery Rate</h4>
+                            <h1 class="green">${recoveryrate}%</h1>
+                        </div>
+                    </div>
+                </div>
+                `;
+                document.getElementById("main").innerHTML=htmlentity;
+            }
+        })
+        getallstates();
+    </script>
+</body>
+</html>
