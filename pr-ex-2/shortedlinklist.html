@@ -1,0 +1,64 @@
+<!-- wap to sort a link list  -->
+<script>
+    class node {
+        constructor(v) {
+            this.value = v;
+            this.next = null;
+        }
+    }
+    class linkedlist {
+        constructor() {
+            this.head = null;
+        }
+        append(value) {
+            let newnode = new node(value);
+            if (!this.head) {
+                this.head = newnode;
+                return;
+            }
+            let current = this.head;
+            while (current.next) {
+                current = current.next;
+            }
+            current.next = newnode;
+        }
+        printdata() {
+            let current = this.head;
+            let result = '';
+            while (current) {
+                result += ' ' + current.value + ' ';
+                current = current.next;
+            }
+            console.log(result);
+        }
+        sort() {
+            if (!this.head || !this.head.next) {
+                return;
+            }
+            let swap = true;
+            while (swap) {
+                swap = false;
+                let current = this.head;
+
+                while (current.next) {
+                    if (current.value > current.next.value) {
+                        let temp = current.value;
+                        current.value = current.next.value;
+                        current.next.value = temp;
+                        swap = true;
+                    }
+                    current = current.next;
+                }
+            }
+        }
+    }
+
+    let list = new linkedlist();
+    list.append(30);
+    list.append(20);
+    list.append(10);
+    list.append(40);
+    list.printdata();
+    list.sort();
+    list.printdata();
+</script>

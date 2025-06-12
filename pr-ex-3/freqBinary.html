@@ -1,0 +1,48 @@
+<script>
+    function upp(a,target){
+        let res=a.length;
+
+        let low=0;
+        let high=a.length-1;
+
+        while(low<=high){
+            let mid=low+Math.floor((high-low)/2);
+            if(a[mid]>=target){
+                res=mid;
+                high=mid-1;
+            }
+            else{
+                low = mid + 1; 
+            }
+        }
+        return res;
+    }
+
+     function low(a,target){
+        let res=a.length;
+
+        let low=0;
+        let high=a.length-1;
+
+        while(low<=high){
+            let mid=low+Math.floor((high-low)/2);
+            if(a[mid]>target){
+                res=mid;
+                high=mid-1;
+            }
+            else{
+                low = mid + 1; 
+            }
+        }
+        return res;
+    }
+
+    function occurrence(a,target){
+        return low(a,target)-upp(a,target);
+    }
+
+    let a=[1,1,2,2,3,3,4,4,4,5,5,5];
+    let target=4;
+
+    console.log(occurrence(a,target));
+</script>

@@ -1,0 +1,53 @@
+<!-- wap to find frequency of the number  -->
+<script>
+    class node{
+    constructor(v){
+        this.value = v;
+        this.next = null;
+    }
+}
+class linked{
+    constructor(){
+        this.head = null;
+    }
+    append(v){
+        let newNode = new node(v);
+        if (this.head == null){
+            this.head = newNode;
+            return;
+        }
+        let current = this.head;
+        while(current.next){
+            current = current.next
+        }
+        current.next = newNode
+    }
+    printdata(){
+        let current = this.head;
+        let result = "";
+        let count = 0;
+        let obj = {};
+        
+        while(current){
+            result += " "+current.value + " ";
+           
+            if (obj[current.value]) {
+                obj[current.value]++;
+            } else {
+                obj[current.value] = 1;
+            }
+           
+           current = current.next;
+           count++;
+        }
+           console.log(result);
+           console.log(obj);
+    }
+}
+let list = new linked()
+list.append(10);
+list.append(20);
+list.append(10);
+list.printdata();
+
+</script>

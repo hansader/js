@@ -1,0 +1,16 @@
+<script>
+    function occurr(a,target){
+        let count=0;
+        for(let i=0;i<a.length-1;i++){
+            if(a[i]==target){
+                count++;
+            }
+        }
+        return count;
+    }
+
+    let a=[1,1,2,2,2,3,3,4,4,4];
+    let target=2;
+
+    console.log(occurr(a,target));
+</script>

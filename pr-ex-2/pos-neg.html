@@ -1,0 +1,53 @@
+<!-- wap to count positive negative value  -->
+<script>
+    class node{
+    constructor(v){
+        this.value = v;
+        this.next = null;
+    }
+}
+class linked{
+    constructor(){
+        this.head = null;
+    }
+    append(v){
+        let newNode = new node(v);
+        
+        if (this.head == null){
+            this.head = newNode;
+            return;
+        }
+        let current = this.head;
+        while(current.next){
+            current = current.next
+        }
+        current.next = newNode
+    }
+    printdata(){
+        let current = this.head;
+        let result = "";
+        let positive = 0;
+        let negative = 0;
+        
+        while(current){
+            result += " "+current.value + " ";
+             if (current.value >= 0){
+                positive++;
+            }
+            else {
+                negative++;
+            }
+            current = current.next;
+        }
+        console.log(result);
+        console.log(`Positive = ${positive}`)
+        console.log(`Negative = ${negative}`)
+    }
+}
+let list = new linked()
+list.append(10);
+list.append(20);
+list.append(-1);
+list.printdata();
+
+</script>
