@@ -1,0 +1,22 @@
+<!--  next greater element using array -->
+
+<script>
+    function nextgreat(a){
+        let n=a.length;
+        let stack=new Array(n).fill(-1);
+
+        for(let i=0;i<n;i++){
+            for(let j=i+1;j<n;j++){
+                if(a[j]>a[i]){
+                    stack[i]=a[j];
+                    break;
+                }
+            }
+        }
+        return stack;
+    }
+
+    let newArray=[3,1,8,1,2,3];
+    console.log(nextgreat(newArray));
+</script> 
+
