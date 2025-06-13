@@ -1,0 +1,118 @@
+<script>
+    class Node{
+        constructor(v){
+            this.value =v;
+            this.next = null;
+        }
+    }
+
+
+    class LinkedList{
+        constructor(){
+            this.head = null;
+            this.head1 = null;
+        }
+
+        append(value){
+            let newNode = new Node(value);
+            let newNode1 = new Node(value);
+
+            if(!this.head && !this.head1){
+                this.head = newNode
+                this.head1 = newNode1
+                return;
+            }
+            let current = this.head;
+            let current1 = this.head1;
+            while(current.next && current1.next){
+                current = current.next;
+                current1 = current1.next;
+            }
+            current.next = newNode
+            current1.next = newNode1
+        }
+        print(){
+            let current = this.head;
+
+            console.log("First Linked List")
+            while(current){
+                console.log(current.value);
+                current = current.next;
+            }
+
+            console.log("Second Linked List")
+            let current1 = this.head1;
+
+            while(current1){
+                console.log(current1.value);
+                current1 = current1.next;
+            }
+        }
+
+        insertGivenPosition(pos,v){
+            let newNode = new Node(v);
+            let current = this.head;
+            let i=1;
+            let prev;
+            if(pos==1){
+                newNode.next = this.head;
+                this.head = newNode;
+                return;
+            }
+
+            while(current && i<pos){
+                prev = current;
+                current = current.next;
+                i++;
+            }
+
+            newNode.next = current;
+            prev.next = newNode;
+        }
+
+        reverseList(){
+            let current = this.head;
+            let nextNode = null;
+            let prev = null;
+
+            while(current){
+                nextNode = current.next;
+                current.next = prev;
+                prev = current;
+                current = nextNode;
+            }
+            this.head = prev;
+        }
+        isLinkedListPalindrom(){
+            let current1 = this.head1;
+            let current = this.head;
+            let flag = true;
+            while(current1 && current){
+                if(current.value != current1.value){
+                    flag = false;
+                    break;
+                }
+                current = current.next;
+                current1 = current1.next;
+            }
+
+            if(flag){
+                console.log("palindrom linked list")
+            }
+            else{
+                console.log("Not Palindrom linked list")
+            }
+        }
+    }
+
+
+    let list = new LinkedList();
+    list.append(300);
+    list.append(200);
+    list.append(100);
+    list.reverseList();
+    list.isLinkedListPalindrom();
+    list.print();
+
+    
+</script>
